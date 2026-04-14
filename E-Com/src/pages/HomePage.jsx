@@ -6,11 +6,22 @@ import './HomePage.css'
 
 export function HomePage() {
     const[products,setProducts]=useState([])
+    const[cart,setCart]=useState([])
+
     useEffect(() => {
         axios.get('http://localhost:3000/api/products')
             .then((response) => {
                 setProducts(response.data)
             }), []
+        
+            axios.get('http://localhost:3000/api/cart-items')
+                .then((response)=>{
+                    setCart(response.data)
+                })
+    })
+    let totalQuantity=0;
+    cart.forEach((cartItem)=>{
+        totalQuantity=cartItem.quantity+totalQuantity;
     })
 
 
@@ -43,7 +54,7 @@ export function HomePage() {
 
                     <a className="cart-link header-link" href="/checkout">
                         <img className="cart-icon" src="images/icons/cart-icon.png" />
-                        <div className="cart-quantity">3</div>
+                        <div className="cart-quantity">{totalQuantity}</div>
                         <div className="cart-text">Cart</div>
                     </a>
                 </div>
