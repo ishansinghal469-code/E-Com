@@ -11,10 +11,11 @@ export function HomePage({cart}) {
     
 
     useEffect(() => {
-        axios.get('http://localhost:3000/api/products')
-            .then((response) => {
-                setProducts(response.data);
-            });
+        const  getHomeData= async ()=>{
+                const response=await axios.get('http://localhost:3000/api/products');
+                setProducts(response);
+        }
+        getHomeData();
     }, []);
     let totalQuantity = 0;
     cart.forEach((cartItem) => {
