@@ -1,27 +1,22 @@
 import axios from 'axios'
-import { useEffect , useState } from 'react'
+import { useEffect, useState } from 'react'
 import './header.css'
 import './HomePage.css'
 
 
-export function HomePage() {
-    const[products,setProducts]=useState([])
-    const[cart,setCart]=useState([])
+export function HomePage({cart}) {
+    const [products, setProducts] = useState([])
+    
 
     useEffect(() => {
         axios.get('http://localhost:3000/api/products')
             .then((response) => {
-                setProducts(response.data)
-            }), []
-        
-            axios.get('http://localhost:3000/api/cart-items')
-                .then((response)=>{
-                    setCart(response.data)
-                })
-    })
-    let totalQuantity=0;
-    cart.forEach((cartItem)=>{
-        totalQuantity=cartItem.quantity+totalQuantity;
+                setProducts(response.data);
+            });
+    }, []);
+    let totalQuantity = 0;
+    cart.forEach((cartItem) => {
+        totalQuantity = cartItem.quantity + totalQuantity;
     })
 
 
