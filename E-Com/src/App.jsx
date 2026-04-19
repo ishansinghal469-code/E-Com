@@ -7,26 +7,31 @@ import { Tracking } from './pages/Tracking'
 import axios from 'axios'
 import './App.css'
 
-
-
-
 function App() {
   const [cart, setCart] = useState([])
 
+  const loadCart = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/api/cart-items?expand=product")
+      setCart(response.data)
+    } catch (error) {
+      console.error("Error loading cart:", error)
+    }
+  }
+
   useEffect(() => {
-    axios.get('http://localhost:3000/api/cart-items?expand=product')
-      .then((response) => {
-        setCart(response.data);
-      })
+    loadCart()
   }, [])
+
   return (
     <Routes>
-      <Route index element={<HomePage cart={cart}/>} />
-      <Route path="checkout" element={<CheckoutPage cart={cart} />} />
-      <Route path="orders" element={<Orders cart={cart} />} />
-      <Route path='tracking' element={<Tracking />} />
+      <Route index element={<HomePage cart={cart} loadCart={loadCart} />} />
+      <Route path="/checkout" element={<CheckoutPage cart={cart} loadCart={loadCart} />} />
+      <Route path="/orders" element={<Orders cart={cart} loadCart={loadCart} />} />
+      <Route path="/tracking" element={<Tracking />} />
     </Routes>
   )
 }
 
 export default App
+
